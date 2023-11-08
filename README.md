@@ -1,24 +1,13 @@
 <div align="center">
 
-# Lightning-Hydra-Template
+# MRIffusion
 
 [![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
 [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
-[![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/) <br>
-[![tests](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml)
-[![code-quality](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml)
-[![codecov](https://codecov.io/gh/ashleve/lightning-hydra-template/branch/main/graph/badge.svg)](https://codecov.io/gh/ashleve/lightning-hydra-template) <br>
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/ashleve/lightning-hydra-template#license)
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ashleve/lightning-hydra-template/pulls)
-[![contributors](https://img.shields.io/github/contributors/ashleve/lightning-hydra-template.svg)](https://github.com/ashleve/lightning-hydra-template/graphs/contributors)
-
-A clean template to kickstart your deep learning project 🚀⚡🔥<br>
-Click on [<kbd>Use this template</kbd>](https://github.com/ashleve/lightning-hydra-template/generate) to initialize new repository.
-
-_Suggestions are always welcome!_
 
 </div>
 
@@ -26,58 +15,7 @@ _Suggestions are always welcome!_
 
 ## 📌  Introduction
 
-**Why you might want to use it:**
-
-✅ Save on boilerplate <br>
-Easily add new models, datasets, tasks, experiments, and train on different accelerators, like multi-GPU, TPU or SLURM clusters.
-
-✅ Education <br>
-Thoroughly commented. You can use this repo as a learning resource.
-
-✅ Reusability <br>
-Collection of useful MLOps tools, configs, and code snippets. You can use this repo as a reference for various utilities.
-
-**Why you might not want to use it:**
-
-❌ Things break from time to time <br>
-Lightning and Hydra are still evolving and integrate many libraries, which means sometimes things break. For the list of currently known problems visit [this page](https://github.com/ashleve/lightning-hydra-template/labels/bug).
-
-❌ Not adjusted for data engineering <br>
-Template is not really adjusted for building data pipelines that depend on each other. It's more efficient to use it for model prototyping on ready-to-use data.
-
-❌ Overfitted to simple use case <br>
-The configuration setup is built with simple lightning training in mind. You might need to put some effort to adjust it for different use cases, e.g. lightning fabric.
-
-❌ Might not support your workflow <br>
-For example, you can't resume hydra-based multirun or hyperparameter search.
-
-> **Note**: _Keep in mind this is unofficial community project._
-
-<br>
-
-## Main Technologies
-
-[PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) - a lightweight PyTorch wrapper for high-performance AI research. Think of it as a framework for organizing your PyTorch code.
-
-[Hydra](https://github.com/facebookresearch/hydra) - a framework for elegantly configuring complex applications. The key feature is the ability to dynamically create a hierarchical configuration by composition and override it through config files and the command line.
-
-<br>
-
-## Main Ideas
-
-- [**Rapid Experimentation**](#your-superpowers): thanks to hydra command line superpowers
-- [**Minimal Boilerplate**](#how-it-works): thanks to automating pipelines with config instantiation
-- [**Main Configs**](#main-config): allow you to specify default training configuration
-- [**Experiment Configs**](#experiment-config): allow you to override chosen hyperparameters and version control experiments
-- [**Workflow**](#workflow): comes down to 4 simple steps
-- [**Experiment Tracking**](#experiment-tracking): Tensorboard, W&B, Neptune, Comet, MLFlow and CSVLogger
-- [**Logs**](#logs): all logs (checkpoints, configs, etc.) are stored in a dynamically generated folder structure
-- [**Hyperparameter Search**](#hyperparameter-search): simple search is effortless with Hydra plugins like Optuna Sweeper
-- [**Tests**](#tests): generic, easy-to-adapt smoke tests for speeding up the development
-- [**Continuous Integration**](#continuous-integration): automatically test and lint your repo with Github Actions
-- [**Best Practices**](#best-practices): a couple of recommended tools, practices and standards
-
-<br>
+MRI reconstruction using diffusion, build using PyTorch Lightning and Hydra.
 
 ## Project Structure
 
@@ -141,12 +79,12 @@ The directory structure of new project looks like this:
 
 ```bash
 # clone project
-git clone https://github.com/ashleve/lightning-hydra-template
-cd lightning-hydra-template
+git clone https://github.com/YuyangXueEd/MRIfussion
+cd MRIfussion
 
 # [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
-conda activate myenv
+conda create -n MRIfussion python=3.10
+conda activate MRIfussion
 
 # install pytorch according to instructions
 # https://pytorch.org/get-started/
@@ -154,15 +92,6 @@ conda activate myenv
 # install requirements
 pip install -r requirements.txt
 ```
-
-Template contains example with MNIST classification.<br>
-When running `python src/train.py` you should see something like this:
-
-<div align="center">
-
-![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
-
-</div>
 
 ## ⚡  Your Superpowers
 
@@ -489,23 +418,6 @@ ValueError: Specify tags before launching a multirun!
 > **Note**: Appending lists from command line is currently not supported in hydra :(
 
 </details>
-
-<br>
-
-## ❤️  Contributions
-
-This project exists thanks to all the people who contribute.
-
-![Contributors](https://readme-contributors.now.sh/ashleve/lightning-hydra-template?extension=jpg&width=400&aspectRatio=1)
-
-Have a question? Found a bug? Missing a specific feature? Feel free to file a new issue, discussion or PR with respective title and description.
-
-Before making an issue, please verify that:
-
-- The problem still exists on the current `main` branch.
-- Your python dependencies are updated to recent versions.
-
-Suggestions for improvements are always welcome!
 
 <br>
 
