@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
 import hydra
+import comet_ml
 import lightning as L
 import rootutils
 import torch
@@ -41,7 +42,8 @@ log = RankedLogger(__name__, rank_zero_only=True)
 
 @task_wrapper
 def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    """Trains the model. Can additionally evaluate on a testset, using best weights obtained during
+    """
+    Trains the model. Can additionally evaluate on a testset, using best weights obtained during
     training.
 
     This method is wrapped in optional @task_wrapper decorator, that controls the behavior during
@@ -114,6 +116,7 @@ def main(cfg: DictConfig) -> Optional[float]:
     """
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
+    
     extras(cfg)
 
     # train the model

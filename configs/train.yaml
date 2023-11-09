@@ -7,8 +7,8 @@ defaults:
   - data: mnist
   - model: mnist
   - callbacks: default
-  - logger: null # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
-  - trainer: default
+  - logger: comet # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+  - trainer: gpu
   - paths: default
   - extras: default
   - hydra: default
@@ -18,7 +18,7 @@ defaults:
   - experiment: null
 
   # config for hyperparameter optimization
-  - hparams_search: null
+  - hparams_search: mnist_optuna
 
   # optional local config for machine/user specific settings
   # it's optional since it doesn't need to exist and is excluded from version control
@@ -46,4 +46,4 @@ test: True
 ckpt_path: null
 
 # seed for random number generators in pytorch, numpy and python.random
-seed: null
+seed: 42
