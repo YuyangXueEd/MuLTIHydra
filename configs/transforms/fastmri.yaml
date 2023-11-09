@@ -1,0 +1,3 @@
+mask_type_str: "random"
+center_fractions: [0.08]
+accelerations: [4]

@@ -5,6 +5,7 @@ root_dir: ${oc.env:PROJECT_ROOT}
 
 # path to data directory
 data_dir: ${paths.root_dir}/data/
+fastmri_knee_dir: ${paths.data_dir}/fastmri_knee/
 
 # path to logging directory
 log_dir: ${paths.root_dir}/logs/

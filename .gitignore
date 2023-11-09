@@ -108,7 +108,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -154,3 +153,5 @@ configs/local/default.yaml
 .aim
 
 .env.example
+src/.hydra
+Thumbs.db
