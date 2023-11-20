@@ -30,7 +30,7 @@ class MriModule(LightningModule):
 
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
-        self.save_hyperparameters(logger=False)
+        self.save_hyperparameters(ignore=['net'])
 
         self.num_log_images = num_log_images
 

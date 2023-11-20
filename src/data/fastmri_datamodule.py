@@ -114,6 +114,7 @@ class SliceDataset(torch.utils.data.Dataset):
         if sample_rate is not None and volume_sample_rate is not None:
             raise ValueError("Either sample_rate or volume_sample_rate should be set but not both.")
         
+        Path("../data/caches/").mkdir(parents=True, exist_ok=True)
         self.dataset_cache_file = Path('../data/caches/' + dataset_cache_file)
         self.transform = transform
         self.recons_key = "reconstruction_rss" if challenge == "multicoil" else "reconstruction_esc"
@@ -471,7 +472,7 @@ class FastMRIDataModule(LightningDataModule):
         
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
-        self.save_hyperparameters(logger=False)
+        self.save_hyperparameters(ignore=['net'])
         
         self.data_path = Path(data_path)
         self.challenge = challenge
