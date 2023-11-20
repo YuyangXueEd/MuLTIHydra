@@ -98,7 +98,7 @@ class UnetDataTransform:
             masked_kspace = kspace_torch
         # inverse Fourier transform to get zero filled solution
         image = ifft2c(masked_kspace)
-        crop_size=(256, 256)
+        crop_size=(320, 320)
         image = complex_center_crop(image, crop_size)
         
         # complex_abs
