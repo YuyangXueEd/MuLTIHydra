@@ -10,8 +10,9 @@ from src.models.mri_module import MriModule
 from src.models.losses.ssim import SSIMLoss
 from src.utils.evaluate import mse, ssim
 
-class UnetModule(MriModule):
-    
+
+
+class VarNetModule(MriModule):
     def __init__(
         self,
         net: torch.nn.Module,
@@ -20,29 +21,28 @@ class UnetModule(MriModule):
         compile: bool,
         **kwargs
     ):
-        super().__init__(**kwargs)
+        super().__init__( **kwargs)
         self.save_hyperparameters(logger=True, ignore=['net'])
         self.net = net
         
         self.l1loss = torch.nn.L1Loss()
         self.ssimloss = SSIMLoss()
         
-    def forward(self, image):
-        return self.net(image.unsqueeze(1)).squeeze(1)
-
+    def forward(self, masked_kspace, mask, num_low_frequencies):
+        return self.net(masked_kspace, mask, num_low_frequencies)
     def on_train_start(self) -> None:
         """Lightning hook that is called when training begins."""
         # by default lightning executes validation step sanity checks before training starts,
         # so it's worth to make sure validation metrics don't store results from these checks
         
-        self.NMSE.reset()
+		self.NMSE.reset()
         self.SSIM.reset()
         self.PSNR.reset()
         self.ValLoss.reset()
         self.TotExamples.reset()
         self.TotSliceExamples.reset()
         self.train_loss.reset()
-        
+    
     def model_step(self, batch: Tuple[torch.Tensor, torch.Tensor]
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Perform a single model step on a batch of data.
@@ -52,12 +52,13 @@ class UnetModule(MriModule):
         :return: A tuple containing (in order):
             - A tensor of losses.
         """
-        output = self(batch.image)
-        target, output = center_crop_to_smallest(batch.target, output)
+        output = self(batch.masked_kspace, batch.mask, batch.num_low_frequencies)
 
+        target, output = center_crop_to_smallest(batch.target, output)
         loss = self.ssimloss(
             output.unsqueeze(1), target.unsqueeze(1), data_range=batch.max_value
         ) + 1e-5 * self.l1loss(output.unsqueeze(1), target.unsqueeze(1))
+        
         return loss, output, target
     
     def training_step(
@@ -75,7 +76,6 @@ class UnetModule(MriModule):
         self.train_loss(loss)
         self.log("train/loss", self.train_loss, prog_bar=False)
         
-        
         return loss
     
     def on_train_epoch_end(self) -> None:
@@ -91,32 +91,28 @@ class UnetModule(MriModule):
         """
         
         loss, output, target = self.model_step(batch)
-        
         # update and log metrics
         
 
-        if output.ndim == 4:
-            mean = batch.mean.unsqueeze(1).unsqueeze(2).unsqueeze(3)
-            std = batch.std.unsqueeze(1).unsqueeze(2).unsqueeze(3)
-        elif output.ndim == 3:
-            mean = batch.mean.unsqueeze(1).unsqueeze(2)
-            std = batch.std.unsqueeze(1).unsqueeze(2)
-            
         if output.ndim == 2:
             output = output.unsqueeze(0)
         elif output.ndim != 3:
             raise RuntimeError("Unexpected output size from validation_step.")
-        
         if target.ndim == 2:
             target = target.unsqueeze(0)
         elif target.ndim != 3:
             raise RuntimeError("Unexpected output size from validation_step.")
-
+        
+        
+        # pick a set of images to log if we don't have one already
         if self.val_log_indices is None:
             self.val_log_indices = list(
-            np.random.permutation(len(self.trainer.val_dataloaders))[: self.num_log_images]
-        )
+                np.random.permutation(len(self.trainer.val_dataloaders))[
+                    : self.num_log_images
+                ]
+            )
             
+        # log images to logger
         if isinstance(batch_idx, int):
             batch_indices = [batch_idx]
         else:
@@ -141,11 +137,11 @@ class UnetModule(MriModule):
                 # self.log_image_neptune("target", target[0], key)
                 # self.log_image_neptune("recon", output_vis[0], key)
                 # self.log_image_neptune("error", error[0], key)
+        
         mse_vals = defaultdict(dict)
         target_norms = defaultdict(dict)
         ssim_vals = defaultdict(dict)
         max_vals = dict()
-        
         
         for i, fname in enumerate(batch.fname):
             slice_num = int(batch.slice_num[i].cpu())
@@ -169,8 +165,6 @@ class UnetModule(MriModule):
         self.validation_step_outputs.append(pred)
         
         return pred
-
-    
     
     def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
@@ -194,12 +188,9 @@ class UnetModule(MriModule):
             "slice": batch.slice_num,
             "output": output.cpu().numpy(),
         }
-        
         self.test_step_outputs.append(pred)
         
         return pred
-
-    
     def setup(self, stage: str) -> None:
         """Lightning hook that is called at the beginning of fit (train + validate), validate,
         test, or predict.
@@ -236,4 +227,4 @@ class UnetModule(MriModule):
         return {"optimizer": optimizer}
 
 if __name__ == "__main__":
-    _ = UnetModule()
+    _ = VarnetModule()

@@ -29,12 +29,12 @@ defaults:
   - debug: null
 
 # task name, determines output directory path
-task_name: "MRI_Recon_fastMRI_Template"
+task_name: "MRI_Recon_fastMRI"
 
 # tags to help you identify your experiments
 # you can overwrite this in experiment configs
 # overwrite from command line with `python train.py tags="[first_tag, second_tag]"`
-tags: ["unet"]
+tags: ["fastmri"]
 
 # set False to skip model training
 train: True

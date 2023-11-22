@@ -1,0 +1,42 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: fastmri_multicoil
+  - override /model: varnet
+  - override /callbacks: default
+  - override /trainer: gpu
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["fastmri_knee", "varnet"]
+
+seed: 42
+
+trainer:
+  min_epochs: 50
+  max_epochs: 60
+  gradient_clip_val: 0.5
+
+# model:
+#   optimizer:
+#     lr: 0.001
+#   net:
+#     lin1_size: 128
+#     lin2_size: 256
+#     lin3_size: 64
+#   compile: false
+
+data:
+  batch_size: 8
+
+# logger:
+#   comet:
+# wandb:
+#   tags: ${tags}
+#   group: "mnist"
+# aim:
+#   experiment: "mnist"
