@@ -54,7 +54,7 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     :return: A tuple with metrics and dict with all instantiated objects.
     """
     # set seed for random number generators in pytorch, numpy and python.random
-    if cfg.get("seed"):
+    if cfg.get("seed") is not None:
         L.seed_everything(cfg.seed, workers=True)
     
     log.info(f"Instantiating mask and transforms.")
@@ -98,7 +98,7 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     if cfg.get("test"):
         log.info("Starting testing!")
         ckpt_path = trainer.checkpoint_callback.best_model_path
-        if ckpt_path == "":
+        if ckpt_path:
             log.warning("Best ckpt not found! Using current weights for testing...")
             ckpt_path = None
         trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path)

@@ -1,11 +1,11 @@
 <div align="center">
 
-# ReconHydra
+# MuLTI Hydra
 
-[![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10%7C_3.11-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
-[![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
+[![hydra](https://img.shields.io/badge/Config-Hydra_1.3+-89b8cd)](https://hydra.cc/)
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/ashleve/lightning-hydra-template#license)
 
@@ -15,7 +15,15 @@
 
 ## 📌  Introduction
 
-MRI reconstruction using diffusion, build using PyTorch Lightning and Hydra.
+A multi-purpose deep learning template, build using PyTorch Lightning and Hydra.
+
+### Pre-made Template
+
+- For general purpose, use the `main` branch.
+- For MRI Reconstruction with FastMRI as an example, checkout the `Recon` branch
+- For Huggingface Transformers, checkout the `Transformers` branch
+- For huggingface Diffuser, checkout the `Diffuser` branch
+- More to go ...
 
 ## Project Structure
 
@@ -79,12 +87,12 @@ The directory structure of new project looks like this:
 
 ```bash
 # clone project
-git clone https://github.com/YuyangXueEd/MRIfussion
-cd MRIfussion
+git clone https://github.com/YuyangXueEd/MuLTIHydra
+cd MuLTIHydra
 
 # [OPTIONAL] create conda environment
-conda create -n MRIfussion python=3.10
-conda activate MRIfussion
+conda create -n MuLTIHydra python=3.10
+conda activate MuLTIHydra
 
 # install pytorch according to instructions
 # https://pytorch.org/get-started/
@@ -1084,6 +1092,7 @@ hydra:
 
 This template was inspired by:
 
+- [lightning-hydra-template](https://github.com/ashleve/lightning-hydra-template)
 - [PyTorchLightning/deep-learning-project-template](https://github.com/PyTorchLightning/deep-learning-project-template)
 - [drivendata/cookiecutter-data-science](https://github.com/drivendata/cookiecutter-data-science)
 - [lucmos/nn-template](https://github.com/lucmos/nn-template)
@@ -1098,12 +1107,12 @@ Other useful repositories:
 
 ## License
 
-Lightning-Hydra-Template is licensed under the MIT License.
+MuLTI-Hydra-Template is licensed under the MIT License.
 
 ```
 MIT License
 
-Copyright (c) 2021 ashleve
+Copyright (c) 2021 YuyangXueEd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
