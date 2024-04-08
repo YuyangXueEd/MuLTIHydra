@@ -38,9 +38,6 @@ from src.utils import (
     log_hyperparameters,
     task_wrapper,
 )
-from src.data.components.fastmri_transform import UnetDataTransform
-from src.data.components.fastmri_transform_utils import create_mask_for_mask_type
-
 log = RankedLogger(__name__, rank_zero_only=True)
 
 
@@ -62,22 +59,10 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     
     log.info(f"Instantiating mask and transforms.")
     
-    mask = create_mask_for_mask_type(
-        cfg.transforms.mask_type_str, 
-        cfg.transforms.center_fractions, 
-        cfg.transforms.accelerations
-    )
-    # use random masks for train transform, fixed masks for val transform
-    train_transform = UnetDataTransform(cfg.data.challenge, mask_func=mask, use_seed=False)
-    val_transform   = UnetDataTransform(cfg.data.challenge, mask_func=mask, use_seed=True)
-    test_transform  = UnetDataTransform(cfg.data.challenge, mask_func=mask, use_seed=True)
-        
+
 
     log.info(f"Instantiating datamodule <{cfg.data._target_}>")
-    datamodule: LightningDataModule = hydra.utils.instantiate(cfg.data,
-        train_transform=train_transform,
-        val_transform=val_transform,
-        test_transform=test_transform)
+    datamodule: LightningDataModule = hydra.utils.instantiate(cfg.data)
 
     log.info(f"Instantiating model <{cfg.model._target_}>")
     model: LightningModule = hydra.utils.instantiate(cfg.model)
